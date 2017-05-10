@@ -11,7 +11,7 @@ var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
-var bodyParser = require('body-parser')
+var router = require('./routers/mock')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -23,25 +23,6 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 var compiler = webpack(webpackConfig)
-app.use(bodyParser.urlencoded({ extended: false }));
-
-var router = express.Router();
-router.get('/login', function (req, res) {
-  console.log('query', req.query);
-  console.log('body', req.body);
-  if (req.query.username === 'meng' && req.query.password === '123456') {
-    return res.json({
-      code: 0,
-      data: {
-        token: 'mytoken'
-      }
-    })
-  }
-  return res.json({
-    code: -1,
-    msg: '登录失败'
-  });
-});
 app.use('/api', router);
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

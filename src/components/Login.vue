@@ -44,6 +44,8 @@ export default {
                 }
                 self.iserr = false;
                 self.loginmsg = '登录成功';
+                localStorage.token = res.data.token;
+                self.$router.push('/');
             }).catch(function (res) {
                 console.log(res);
             });
