@@ -1,6 +1,6 @@
 <template>
     <ul class="tasklist">
-        <li v-for="todo in ctodos" :class="{err:todo.done}">
+        <li v-for="todo in todos" :class="{err:todo.done}">
             <input type="checkbox" v-model="todo.done" @change="changeStatus(todo)"> {{todo.name}}
             <span class="time">创建时间：{{todo.createtime|formatDate}}</span>
             <span class="time">修改时间：{{todo.updatetime|formatDate}}</span>
@@ -29,18 +29,6 @@ export default {
         changeStatus(todo) {
             //修改todo的<修改时间>
             todo.updatetime = Date.now();
-        }
-    },
-    computed: {
-        ctodos() {
-            return this.todos.sort(function (eleA, eleB) {
-                if (eleA.updatetime < eleB.updatetime)
-                    return 1;
-                else if (eleA.updatetime > eleB.updatetime)
-                    return -1;
-                else
-                    return 0;
-            });
         }
     }
 }
