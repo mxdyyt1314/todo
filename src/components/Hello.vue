@@ -49,7 +49,7 @@ export default {
   methods: {
     createData() {
       var self = this;
-      this.$ajax({
+      self.$ajax({
         method: 'get',
         url: '/api/task/query'
       }).then(function (res) {
