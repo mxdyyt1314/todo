@@ -1,21 +1,21 @@
 <template>
   <div class="hello">
-    <input type="text" v-model="newTodo" v-on:keyup.enter="addNewTodo">
-    <h1>未完成</h1>
-    <ul>
-      <li v-for="todo in notDoneTodos">
-        <input type="checkbox" v-model="todo.done"> {{todo.name}} {{todo.createtime|formatDate}}
-      </li>
+    <input type="text" v-model="newTodo" placeholder="填写任务并enter" v-on:keyup.enter="addNewTodo">
+    <h2>未完成</h2>
+    <task-list v-bind:todos="notDoneTodos"></task-list>
     </ul>
     <hr>
-    <h1>已完成</h1>
-    <ul>
-      <li v-for="todo in doneTodos" class="complete">{{todo.name}}</li>
-    </ul>
+    <h2>已完成</h2>
+    <task-list v-bind:todos="doneTodos"></task-list>
+    <hr>
+    <h2>全部</h2>
+    <task-list v-bind:todos="todos"></task-list>
   </div>
 </template>
 
-<script scope="es2016">
+<script>
+import taskList from './TaskList';
+
 export default {
   name: 'hello',
   data() {
@@ -23,6 +23,9 @@ export default {
       todos: [],
       newTodo: ''
     }
+  },
+  components: {
+    taskList
   },
   computed: {
     doneTodos() {
@@ -33,17 +36,6 @@ export default {
     notDoneTodos() {
       return this.todos.filter(function (ele) {
         return !ele.done;
-      });
-      [].sort(function (a, b) {
-        if (a < b) {
-          return -1;
-        }
-        else if (a == b) {
-          return 0;
-        }
-        else {
-          return 1;
-        }
       });
     }
   },
@@ -72,27 +64,10 @@ export default {
       if (!this.newTodo) {
         return;
       }
-      this.todos.push({ name: this.newTodo, done: false, createtime: Date.now() });
+      this.todos.push({ name: this.newTodo, done: false, createtime: Date.now(), updatetime: Date.now() });
       this.newTodo = '';
     }
-  },
-  filters: {
-    formatDate(timetick) {
-      console.log(timetick);
-      var date = new Date(timetick);
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
-      var hour = date.getHours();
-      var minuter = date.getMinutes();
-      var sencond = date.getSeconds();
-      var formatDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minuter + ':' + sencond;
-      return formatDate;
-    }
   }
-}
-function createData() {
-  console.log('create data');
 }
 </script>
 

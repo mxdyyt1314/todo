@@ -4,14 +4,14 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '123456',
-    database: 'communet'
+    database: 'db_todo'
 });
 
 connection.connect();
 //查询
-connection.query('select * from h5_edit_html_pc;', function (err, rows, fields) {
+connection.query('select * from todos;', function (err, rows, fields) {
     // console.log(rows);
-    console.log(fields);
+    console.log(rows);
 });
 //关闭连接
 connection.end();
