@@ -3,7 +3,7 @@
         我是个测试组件 {{count}}
         <div>{{doneTodos}}</div>
         <button @click="increseCount">count++</button>
-        <button @click="dispatchIncrement">分发action</button>
+        <button @click="incrementAsync">分发action</button>
     </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
         increseCount() {
             this.$store.commit({ type: MUTATIONS_INCREMENT, amount: 3 });
         },
-        dispatchIncrement() {
+        incrementAsync() {
             this.$store.dispatch({ type: 'incrementAsync', amount: 3 });
         }
     }
