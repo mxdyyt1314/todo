@@ -9,12 +9,13 @@
     <task-list v-bind:todos="doneTodos"></task-list>
     <hr>
     <h2>全部</h2>
-    <task-list v-bind:todos="todos"></task-list>
+    <task-list v-bind:todos="myTodos"></task-list>
   </div>
 </template>
 
 <script>
 import taskList from './TaskList';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'hello',
@@ -37,7 +38,10 @@ export default {
       return this.todos.filter(function (ele) {
         return !ele.done;
       });
-    }
+    },
+    ...mapGetters({
+      myTodos: state => state.todos
+    })
   },
   mounted() {
     if (!window.localStorage.token) {
@@ -48,17 +52,18 @@ export default {
   },
   methods: {
     createData() {
-      var self = this;
-      self.$ajax({
-        method: 'get',
-        url: '/api/task/query'
-      }).then(function (res) {
-        if (res.data.code == 0) {
-          self.todos = res.data.data;
-        }
-      }).catch(function (res) {
-        console.log(res);
-      });
+      // var self = this;
+      // self.$ajax({
+      //   method: 'get',
+      //   url: '/api/task/query'
+      // }).then(function (res) {
+      //   if (res.data.code == 0) {
+      //     self.todos = res.data.data;
+      //   }
+      // }).catch(function (res) {
+      //   console.log(res);
+      // });
+      this.$store.dispatch('getTodos')
     },
     addNewTodo() {
       if (!this.newTodo) {

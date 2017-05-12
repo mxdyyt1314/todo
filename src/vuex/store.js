@@ -5,10 +5,12 @@ import * as actions from './actions.js';
 Vue.use(Vuex);
 
 const state = {
-    todos:[],
+    todos: [],
 };
 const mutations = {
-
+    INIT_TODOS (state, todos) {
+        state.todos = todos;
+    }
 };
 const getters = {};
 
