@@ -10,8 +10,8 @@ export const getTodos = ({ commit }) => {
         method: 'get',
     }).then(res => {
         let todos = res.data.data;
-        commit(CType.INIT_TODOS);
+        commit({ type: CType.INIT_TODOS, todos:todos });
     }).catch(res => {
-
+        console.log(res);
     });
 }

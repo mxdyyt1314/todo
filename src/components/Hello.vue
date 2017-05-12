@@ -15,7 +15,7 @@
 
 <script>
 import taskList from './TaskList';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions,mapState } from 'vuex';
 
 export default {
   name: 'hello',
@@ -39,7 +39,7 @@ export default {
         return !ele.done;
       });
     },
-    ...mapGetters({
+    ...mapState({
       myTodos: state => state.todos
     })
   },
