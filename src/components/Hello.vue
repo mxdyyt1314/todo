@@ -1,27 +1,31 @@
 <template>
   <div class="hello">
     <input type="text" v-model="newTodo" placeholder="填写任务并enter" v-on:keyup.enter="addNewTodo">
-    <h2>未完成</h2>
-    <task-list v-bind:todos="notDoneTodos"></task-list>
-    </ul>
-    <hr>
-    <h2>已完成</h2>
-    <task-list v-bind:todos="doneTodos"></task-list>
-    <hr>
-    <h2>全部</h2>
-    <task-list v-bind:todos="myTodos"></task-list>
+    <div>
+      <h2>未完成</h2>
+      <task-list v-bind:todos="notDoneTodos"></task-list>
+      <hr>
+    </div>
+    <div>
+      <h2>已完成</h2>
+      <task-list v-bind:todos="doneTodos"></task-list>
+      <hr>
+    </div>
+    <div>
+      <h2>全部</h2>
+      <task-list v-bind:todos="Todos"></task-list>
+    </div>
   </div>
 </template>
 
 <script>
 import taskList from './TaskList';
-import { mapGetters, mapActions,mapState } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 
 export default {
   name: 'hello',
   data() {
     return {
-      todos: [],
       newTodo: ''
     }
   },
@@ -29,18 +33,12 @@ export default {
     taskList
   },
   computed: {
-    doneTodos() {
-      return this.todos.filter(function (ele) {
-        return ele.done;
-      });
-    },
-    notDoneTodos() {
-      return this.todos.filter(function (ele) {
-        return !ele.done;
-      });
-    },
     ...mapState({
-      myTodos: state => state.todos
+      Todos: 'todos'
+    }),
+    ...mapGetters({
+      doneTodos: 'doneTodos',
+      notDoneTodos: 'notDoneTodos'
     })
   },
   mounted() {
@@ -51,25 +49,15 @@ export default {
     this.createData();
   },
   methods: {
-    createData() {
-      // var self = this;
-      // self.$ajax({
-      //   method: 'get',
-      //   url: '/api/task/query'
-      // }).then(function (res) {
-      //   if (res.data.code == 0) {
-      //     self.todos = res.data.data;
-      //   }
-      // }).catch(function (res) {
-      //   console.log(res);
-      // });
-      this.$store.dispatch('getTodos')
-    },
+    ...mapActions({
+      createData: 'getTodos'
+    }),
     addNewTodo() {
-      if (!this.newTodo) {
+      if (this.newTodo === '') {
+        console.log('任务名称不能为空');
         return;
       }
-      this.todos.push({ name: this.newTodo, done: false, createtime: Date.now(), updatetime: Date.now() });
+      this.$store.dispatch({ type: 'AddNewTodo', newtodo: this.newTodo });
       this.newTodo = '';
     }
   }

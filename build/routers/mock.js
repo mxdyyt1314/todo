@@ -14,6 +14,10 @@ router.get('/task/query', function (req, res) {
     });
 });
 
+router.post('/task/add', (req, res) => { 
+    
+});
+
 function resJson (res, data, code = 0) {
     return res.json({
         code: code,
