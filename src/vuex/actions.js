@@ -20,20 +20,44 @@ export const getTodos = ({ commit }) => {
  *添加新TODO
  */
 export const AddNewTodo = ({ state, commit }, deplay) => {
-    console.log(deplay.newtodo);
+    let now = Date.now();
     let todo = { id: -1, name: deplay.newtodo, done: false };
     //乐观添加
-    let index = commit({ type: CType.ADD_TODO, todo });
-    debugger;
+    commit({ type: CType.ADD_TODO, todo });
+    //将当前添加todo的索引值保存起来
+    let index = state.todos.length - 1;
     axios({
-        url: '',
+        url: '/api/task/add',
         method: 'post',
         data: {
-
+            todo: todo
         }
     }).then(res => {
-
+        state.todos.splice(index, 1, res.data.data);
     }).catch(err => {
-        commit({ type: CType.REMOVE_FAILURE_TODO });
+        state.todos.splice(index, 1);
+        console.log()
     });
 }
+
+/**
+ * 删除TODO
+ * @param {object} state,commit 
+ * @param {object} deplay 
+ */
+export const RemoveTodo = ({ state, commit }, deplay) => {
+    let index = deplay.index;
+    let todo = state.todos[index];
+    commit({ type: CType.REMOVE_TODO, index });
+    axios({
+        url: '/api/task/remove',
+        method: 'post',
+        data: {
+            id: todo.id
+        }
+    }).then(res => {
+        console.log('删除成功');
+    }).catch(res => {
+        state.todos.splice(index, 0, todo);
+    });
+};

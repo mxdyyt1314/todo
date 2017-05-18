@@ -3,17 +3,17 @@
     <input type="text" v-model="newTodo" placeholder="填写任务并enter" v-on:keyup.enter="addNewTodo">
     <div>
       <h2>未完成</h2>
-      <task-list v-bind:todos="notDoneTodos"></task-list>
+      <task-list v-bind:todos="notDoneTodos" v-on:removeTodo="removeTodo"></task-list>
       <hr>
     </div>
     <div>
       <h2>已完成</h2>
-      <task-list v-bind:todos="doneTodos"></task-list>
+      <task-list v-bind:todos="doneTodos" v-on:removeTodo="removeTodo"></task-list>
       <hr>
     </div>
     <div>
       <h2>全部</h2>
-      <task-list v-bind:todos="Todos"></task-list>
+      <task-list v-bind:todos="Todos" v-on:removeTodo="removeTodo"></task-list>
     </div>
   </div>
 </template>
@@ -59,6 +59,9 @@ export default {
       }
       this.$store.dispatch({ type: 'AddNewTodo', newtodo: this.newTodo });
       this.newTodo = '';
+    },
+    removeTodo(index) {
+      this.$store.dispatch({ type: 'RemoveTodo', index: index });
     }
   }
 }

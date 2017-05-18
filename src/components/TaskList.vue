@@ -4,6 +4,7 @@
             <input type="checkbox" v-model="todo.done" @change="changeStatus(todo)"> {{todo.name}}
             <span class="time">创建时间：{{todo.createtime|formatDate}}</span>
             <span class="time">修改时间：{{todo.updatetime|formatDate}}</span>
+            <a href="javascript:void(0)" @click="removeTodo(todo)">删除</a>
         </li>
     </ul>
 </template>
@@ -20,7 +21,16 @@ export default {
         changeStatus(todo) {
             todo.updatetime = Date.now();
         },
-
+        removeTodo(todo) {
+            var index = -1;
+            for (var i = 0; i < this.todos.length; i++) {
+                if (this.todos[i].id === todo.id) {
+                    index = i;
+                    break;
+                }
+            }
+            this.$emit('removeTodo',index);
+        }
     }
 }
 

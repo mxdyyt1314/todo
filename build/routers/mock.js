@@ -14,11 +14,25 @@ router.get('/task/query', function (req, res) {
     });
 });
 
-router.post('/task/add', (req, res) => { 
-    
+router.post('/task/add', (req, res) => {
+    let todo = req.body.todo;
+    taskdb.addTask({ name: todo.name }, (err, rows) => {
+        let id = rows.insertId;
+        taskdb.getSingle(id, todo => {
+            resJson(res, todo);
+        });
+    });
 });
 
-function resJson (res, data, code = 0) {
+router.post('/task/remove', (req, res) => {
+    let id = req.body.id;
+    taskdb.removeTask(id, (rows) => {
+        console.log(rows);
+        resJson(res, rows);
+    });
+});
+
+function resJson(res, data, code = 0) {
     return res.json({
         code: code,
         data: data
